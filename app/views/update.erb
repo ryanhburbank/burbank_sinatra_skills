@@ -1,0 +1,13 @@
+<form action="/users/skills/<%=@proficiency.id %>" method="POST">
+
+    
+    <label class="years" for="years">Years</label>
+    <input id="years" placeholder="Put your experiance in years" type="text" name="years" value="<%=@proficiency.try(:years)%>">
+     <label class="formal" for="formal">Formal</label>
+    <input id="formal" type="radio" name="formal" value="1">Yes</br>
+    <input id="formal" type="radio" name="formal" value="2">No
+    
+</form>
+
+<a class="button back" href="/users/<%=@proficiency.user.id%>">Back to Profile</a>
+

@@ -1,0 +1,11 @@
+<form action="/user/skills/new/" method="POST">
+  <% Skills.all.each do |skill| %>
+    <input type="radio" name="id" value="<%=skill.id%>"><%= skill.title%><br>
+  <% end %>
+  Formal Experiance:
+  <input type="radio" name="formal" value="1">Yes<br>
+  <input type="radio" name="formal" value="0">No</br>
+  Years Experiance:<input type="text" name="years">
+  <input type="submit" value="submit" >
+</form>
+

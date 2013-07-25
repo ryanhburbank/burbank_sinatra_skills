@@ -5,6 +5,7 @@ get '/' do
   erb :index
 end
 
+
 #----------- SESSIONS -----------
 
 get '/sessions/new' do
@@ -20,13 +21,14 @@ post '/sessions' do
   if user
     # successfully authenticated; set up session and redirect
     session[:user_id] = user.id
-    redirect '/'
+    redirect to("/user/#{session[:user_id]}")
   else
     # an error occurred, re-render the sign-in form, displaying an error
     @error = "Invalid email or password."
     erb :sign_in
   end
 end
+
 
 delete '/sessions/:id' do
   # sign-out -- invoked via AJAX
@@ -50,9 +52,49 @@ post '/users' do
   if @user.save
     # successfully created new account; set up the session and redirect
     session[:user_id] = @user.id
-    redirect '/'
+    redirect to ("/user/#{session[:user_id]}")
   else
     # an error occurred, re-render the sign-up form, displaying errors
     erb :sign_up
   end
+end
+
+
+get "/user/:id" do
+  @user = User.find(session[:user_id])
+  erb :profile
+end
+
+get "/users/skills/:id" do 
+  @proficiency = Proficiency.find(params[:id])
+  erb :update
+end
+
+get "/user/skills/new" do
+  @user = User.find(session[:user_id])
+  erb :new_skill
+end
+
+post "users/skills/new" do
+  proficiency = Proficiency.new
+  proficiency.user = User.find(session[:user_id])
+  proficiency.skill = Skill.find(params[:id])
+  proficiency.formal = params[:formal].to_i
+  proficiency.years = params[:years].to_i
+  proficiency.save
+  redirect to("/user/#{session[:user_id]}")
+end
+
+post "/users/skills/:id" do 
+  proficiency = Proficiency.find(params[:id])
+  proficiency.years = params[:years].to_i
+  proficiency.formal = params[:formal].to_i
+  proficiency.save
+  redirect to("/user/#{proficiency.user.id}")
+end
+
+post "/users/skills/delete/:id" do 
+  proficiency = Proficiency.find(params[:id])
+  proficiency.destroy
+  redirect to("/user/#{session[:user_id]}")
 end

@@ -1,0 +1,56 @@
+<table>
+  <tr>
+  <th>Name</th>
+  <th>Skills</th>
+  <th>Years</th>
+  <th>Formal</th>
+  <th>Update</th>
+  <th>Delete</th>
+  </tr>
+  <tr>
+    <td><%= @user.name %></td>
+    <td>
+      <table>
+        <% @user.proficiencies.each do |proficiency| %>
+        <tr><td><%= proficiency.skill.name %></td></tr>
+        <% end %>
+      </table>
+    </td>
+    <td>
+      <table>
+        <% @user.proficiencies.each do |proficiency| %>
+        <tr><td><%= proficiency.years %></td></tr>
+        <% end %>
+      </table>
+    </td>
+    <td>
+      <table>
+        <% @user.proficiencies.each do |proficiency| %>
+          <tr><td><%= proficiency.formal == 1 ? "Yes" : "No" %></td></tr>
+        <% end %>
+      </table>
+    </td>
+    <td>
+      <table>
+        <% @user.proficiencies.each do |proficiency| %>
+          <% if @user.id == session[:user_id] %>
+          <tr><td><a href="/users/skills/<%=proficiency.id %>">Update</a></td></tr>
+          <% end %>
+      </table>
+    </td>
+    <td> 
+      <table>
+        <% if @user.id == session[:user_id] %>
+        <% @user.proficiencies.each do |proficiency| %>
+        <tr><td><form action="/users/skills/delete/<%=proficiency.id%>" method="POST"><input type="submit" value="Delete"></form></td></tr>
+        <% end %>
+      </table>
+
+  </tr>
+
+</table>
+
+<a href="/user/skills/new">New Proficiency</a>
+
+
+           
